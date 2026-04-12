@@ -124,3 +124,5 @@ source("R/03_bn_structure.R")
 source("R/04_parameter_learning.R")
 source("R/05_validation.R")
 source("R/06_inference.R")
+
+If you use or adapt this workflow, please cite.
