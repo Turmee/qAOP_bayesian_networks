@@ -10,6 +10,7 @@ required_packages <- c(
   "e1071",      # Statistical moments (skewness/kurtosis)
   "nortest",    # Normality tests
   "pROC",       # ROC and AUC analysis
+  "boot",       # Bootstrap utilities
   "broom",      # Tidy model outputs
   "gridExtra",  # Plot arrangement
   "cowplot"     # Legend handling

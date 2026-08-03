@@ -1,129 +1,83 @@
 # Bayesian Network Workflow for qAOP
 
-This repository provides **illustrative R code** for constructing and evaluating Bayesian network (BN) models in the context of **quantitative Adverse Outcome Pathways (qAOPs)**
+This repository provides illustrative R code for constructing and evaluating
+Bayesian network (BN) models in quantitative Adverse Outcome Pathways (qAOPs).
+It is a modular workflow template from preprocessing through probabilistic
+inference and external-group validation.
 
-The code is designed as a **modular workflow template**, covering key steps from preprocessing to probabilistic inference.
+## Scope
 
-**Important**  
-- No raw data or results are included  
-- Scripts are **not directly executable** without user-provided data  
-- The focus is on **methodology and structure**, not reproducibility of published results  
+- No raw data, derived data, manuscript results, or fitted models are included.
+- Scripts require a user-provided data set and are not directly executable.
+- Example names and thresholds are placeholders, not reported results.
+- The focus is methodology and reusable pipeline structure.
 
-## 📁 Repository Structure
-R/
+## Repository structure
 
-├── 01_preprocessing.R
-
-├── 02_exploration.R
-
-├── 03_bn_structure.R
-
-├── 04_parameter_learning.R
-
-├── 05_validation.R
-
-├── 06_inference.R
-
-├── 07_in_vivo_analysis.R
-
-└── utils.R
-
-
-Each script represents one step of the analytical workflow.
-
----
-
-## 🧭 Workflow Overview
-
-### 1. Data preprocessing  
-- Outlier detection using Tukey’s rule (1.5 × IQR)  
-- Distribution diagnostics:
-  - Kullback–Leibler divergence  
-  - Q–Q plot correlation  
-  - Shapiro–Wilk test  
-
----
-
-### 2. Exploratory analysis  
-- Distributional assessment  
-- Correlation analysis with bootstrap confidence intervals  
-- Exploration of exposure effects (e.g., MANOVA, regression)
-
----
-
-### 3. Bayesian network structure  
-- A priori structure based on biological knowledge (AOP framework)  
-- Example structure used in the workflow: ATPperc → aSMA → COL1A1
-
-
----
-
-### 4. Parameter learning  
-- Gaussian Bayesian Network (GBN)  
-- Parameters estimated via maximum likelihood (`bnlearn`)  
-- Each node modeled as a linear function of its parents with Gaussian residuals  
-
----
-
-### 5. Model validation  
-- k-fold cross-validation  
-- Performance metrics:
-  - R² (posterior predictive correlation)  
-  - Normalized Mean Squared Error (NMSE)  
-- Calibration via predicted vs observed plots  
-- Posterior sampling using `cpdist()`  
-
----
-
-### 6. Probabilistic inference  
-- Likelihood-weighted sampling  
-- Conditional probability queries  
-- Threshold-based predictions (e.g., low vs high expression)  
-
----
-
-### 7. In vivo data analysis (template)  
-- Wilcoxon rank-sum tests  
-- Logistic regression (univariate and multivariate)  
-- ROC analysis and threshold selection (Youden’s J)  
-
----
-
-## 🧠 Key Concepts
-
-**Performance vs Uncertainty**  
-- Performance: agreement between predictions and observations  
-- Uncertainty: dispersion of posterior predictive distributions  
-
-**Gaussian Bayesian Networks**  
-- Linear relationships between variables  
-- Normally distributed residuals  
-
----
-
-## 📦 Dependencies
-
-- R (≥ 4.0)
-- `bnlearn`
-- `ggplot2`
-- `dplyr`
-- `boot`
-- `pROC`
-
----
-
-## 📌 Usage
-
-This repository is intended as a **template**.
-
-Typical workflow:
-
-```r
-source("R/01_preprocessing.R")
-source("R/03_bn_structure.R")
-source("R/04_parameter_learning.R")
-source("R/05_validation.R")
-source("R/06_inference.R")
+```text
+R_code/
+|-- 01_preprocessing.R
+|-- 02_exploration.R
+|-- 03_bn_structure.R
+|-- 04_parameter_learning.R
+|-- 05_validation.R
+|-- 06_inference.R
+|-- 07_in_vivo_analysis.R
+|-- 08_resampling_validation.R
+|-- 09_grouped_validation.R
+|-- packages.R
+|-- packages_list.txt
+`-- utils.R
 ```
 
-If you use or adapt this workflow, please cite.
+## Workflow
+
+1. Preprocessing and distribution diagnostics.
+2. Exploratory association and exposure-effect analyses.
+3. Biologically informed DAG definition.
+4. Maximum-likelihood learning of Gaussian BN parameters.
+5. Basic k-fold validation with R-squared, NMSE, AUC, and calibration plots.
+6. Likelihood-weighted inference and threshold-based probability queries.
+7. In vivo analysis template using rank tests, logistic models, and ROC curves.
+8. Reusable k-fold prediction and bootstrap uncertainty summaries.
+9. Leave-one-study/chemical/group-out validation and label-permutation testing.
+
+## Expected data interface
+
+Users supply a complete-case data frame with one column per DAG node. Grouped
+validation also requires a grouping column such as `Study` or `Chemical`.
+Optional metadata columns can be retained in prediction outputs.
+
+## Dependencies
+
+R (>= 4.0), `bnlearn`, and `pROC` are central to the validation pipeline.
+Additional packages are listed in `R_code/packages_list.txt`.
+
+## Illustrative usage
+
+```r
+source("R_code/08_resampling_validation.R")
+source("R_code/09_grouped_validation.R")
+
+dag <- bnlearn::model2network(
+  "[Exposure][KeyEvent1|Exposure][KeyEvent2|KeyEvent1]"
+)
+targets <- c("KeyEvent1", "KeyEvent2")
+thresholds <- c(KeyEvent1 = 1.5, KeyEvent2 = 1.5)
+
+cv_results <- bn_kfold_cv(
+  my_data, dag, targets, thresholds,
+  metadata = c("Study", "Chemical"), seed = 123
+)
+calculate_bn_metrics(cv_results, targets)
+
+grouped_results <- leave_one_group_out_cv(
+  my_data, dag, targets, "Study", thresholds
+)
+```
+
+The permutation pipeline may be computationally expensive because each
+permutation refits the BN and uses posterior sampling. Select repetitions and
+sample counts appropriate to the intended analysis.
+
+If you use or adapt this workflow, please cite the associated publication.

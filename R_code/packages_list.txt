@@ -1,0 +1,12 @@
+R (>= 4.0)
+bnlearn
+boot
+broom
+cowplot
+dplyr
+e1071
+ggplot2
+gridExtra
+nortest
+pROC
+tidyr
