@@ -30,7 +30,7 @@ R_code/
 |-- packages_list.txt
 `-- utils.R
 data/
-|-- fibrosis_chemicals_multicell_ver3_na_removed.rds
+|-- liver_fibrosis_bn_analysis_data.rds
 |-- tg_gates.csv
 `-- README.md
 ```
@@ -88,4 +88,12 @@ The permutation pipeline may be computationally expensive because each
 permutation refits the BN and uses posterior sampling. Select repetitions and
 sample counts appropriate to the intended analysis.
 
-If you use or adapt this workflow, please cite the associated publication.
+## Citation
+
+If you use the workflow or datasets, please cite:
+
+Durnik R, Juchelkova T, Hecht H, Winkelman LMT, Beltman JB, Coumoul X,
+Jornod F, Audouze K, Blaha L, Bajard L. (2026). Towards Bayesian-based
+quantitative adverse outcome pathways using in vitro data from open literature
+and continuous variables: a case example for liver fibrosis. *Toxicological
+Sciences*, 209(8). https://doi.org/10.1093/toxsci/kfag090

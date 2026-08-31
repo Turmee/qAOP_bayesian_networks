@@ -5,7 +5,7 @@ analyses. They are shared to make the analytical inputs transparent. The
 repository's R scripts remain illustrative workflow examples rather than a
 complete reproduction package.
 
-## `fibrosis_chemicals_multicell_ver3_na_removed.rds`
+## `liver_fibrosis_bn_analysis_data.rds`
 
 This R data frame is the final complete-case dataset used for the Gaussian
 Bayesian network, k-fold cross-validation, bootstrap evaluation, and
@@ -30,7 +30,8 @@ defined as values strictly greater than a fold-change threshold of 1.5.
 `Study_ID` was generated from the
 source DOI as anonymized factor labels (`Study_1`, `Study_2`, and so on).
 Finally, rows missing any of `ATP_perc`, `aSMA`, or `Col1a1` were removed,
-leaving the 26 complete cases in this file.
+leaving 26 rows with complete observations for these three BN variables. Other
+supporting columns retained in the dataset may contain missing values.
 
 The RDS also retains provenance and supporting columns from preprocessing,
 including DOI, chemical, exposure, concentration, gene labels, extracellular
@@ -76,9 +77,17 @@ load it with `readRDS()`.
 SHA-256 checksums of the published files:
 
 ```text
-506b00ddedf8fe6409453d3d15f9fccf84290b3f59792920c095ec90d08f9bd9  fibrosis_chemicals_multicell_ver3_na_removed.rds
+506b00ddedf8fe6409453d3d15f9fccf84290b3f59792920c095ec90d08f9bd9  liver_fibrosis_bn_analysis_data.rds
 f8e70ffe03451332c23df35cfa30db7b3adfb4c73a30809b9aa25e0f5e157b13  tg_gates.csv
 ```
 
-When reusing these data, please cite the associated publication and the
-original studies identified in the data.
+## Citation
+
+When reusing these data, please cite the original studies identified in the
+data and the associated publication:
+
+Durnik R, Juchelkova T, Hecht H, Winkelman LMT, Beltman JB, Coumoul X,
+Jornod F, Audouze K, Blaha L, Bajard L. (2026). Towards Bayesian-based
+quantitative adverse outcome pathways using in vitro data from open literature
+and continuous variables: a case example for liver fibrosis. *Toxicological
+Sciences*, 209(8). https://doi.org/10.1093/toxsci/kfag090
