@@ -7,7 +7,8 @@ inference and external-group validation.
 
 ## Scope
 
-- No raw data, derived data, manuscript results, or fitted models are included.
+- Two derived analysis datasets are provided in `data/`; no raw source data,
+  manuscript results, or fitted models are included.
 - Scripts require a user-provided data set and are not directly executable.
 - Example names and thresholds are placeholders, not reported results.
 - The focus is methodology and reusable pipeline structure.
@@ -28,6 +29,10 @@ R_code/
 |-- packages.R
 |-- packages_list.txt
 `-- utils.R
+data/
+|-- fibrosis_chemicals_multicell_ver3_na_removed.rds
+|-- tg_gates.csv
+`-- README.md
 ```
 
 ## Workflow
@@ -47,6 +52,9 @@ R_code/
 Users supply a complete-case data frame with one column per DAG node. Grouped
 validation also requires a grouping column such as `Study` or `Chemical`.
 Optional metadata columns can be retained in prediction outputs.
+
+The exact derived datasets used for the Bayesian-network validation and the
+complementary in vivo analysis are documented in `data/README.md`.
 
 ## Dependencies
 
